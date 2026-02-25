@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #
-# Script to build F-Droid release of RustDesk
+# Script to build F-Droid release of JetXcelDesk
 #
-# Copyright (C) 2024, The RustDesk Authors
+# Copyright (C) 2024, The JetXcelDesk Authors
 #               2024, Vasyl Gello <vasek.gello@gmail.com>
 #
 
@@ -11,8 +11,8 @@
 #
 # It accepts the following arguments:
 #
-# - versionName from https://github.com/rustdesk/rustdesk/releases/download/fdroid-version/rustdesk-version.txt
-# - versionCode from https://github.com/rustdesk/rustdesk/releases/download/fdroid-version/rustdesk-version.txt
+# - versionName from https://github.com/OLAYA25/JetXcelDesk/releases/download/fdroid-version/jetxceldesk-version.txt
+# - versionCode from https://github.com/OLAYA25/JetXcelDesk/releases/download/fdroid-version/jetxceldesk-version.txt
 # - Android architecture to build APK for: armeabi-v7a arm64-v8av x86 x86_64
 # - The build step to execute:
 #
@@ -78,25 +78,25 @@ arm64-v8a)
 	FLUTTER_TARGET=android-arm64
 	NDK_TARGET=aarch64-linux-android
 	RUST_TARGET=aarch64-linux-android
-	RUSTDESK_FEATURES='flutter,hwcodec'
+	JETXCELDESK_FEATURES='flutter,hwcodec'
 	;;
 armeabi-v7a)
 	FLUTTER_TARGET=android-arm
 	NDK_TARGET=arm-linux-androideabi
 	RUST_TARGET=armv7-linux-androideabi
-	RUSTDESK_FEATURES='flutter,hwcodec'
+	JETXCELDESK_FEATURES='flutter,hwcodec'
 	;;
 x86_64)
 	FLUTTER_TARGET=android-x64
 	NDK_TARGET=x86_64-linux-android
 	RUST_TARGET=x86_64-linux-android
-	RUSTDESK_FEATURES='flutter'
+	JETXCELDESK_FEATURES='flutter'
 	;;
 x86)
 	FLUTTER_TARGET=android-x86
 	NDK_TARGET=i686-linux-android
 	RUST_TARGET=i686-linux-android
-	RUSTDESK_FEATURES='flutter'
+	JETXCELDESK_FEATURES='flutter'
 	;;
 *)
 	echo "ERROR: Unknown Android ABI '${ANDROID_ABI}'!" >&2
@@ -136,7 +136,7 @@ prebuild)
 		.env.CARGO_NDK_VERSION \
 		.github/workflows/flutter-build.yml)"
 
-	# Flutter used to compile main Rustdesk library
+	# Flutter used to compile main JetXcelDesk library
 
 	FLUTTER_VERSION="$(yq -r \
 		.env.ANDROID_FLUTTER_VERSION \
@@ -307,12 +307,12 @@ prebuild)
 		fi
 	fi
 
-	# Patch the RustDesk sources
+	# Patch the JetXcelDesk sources
 
 	git apply res/fdroid/patches/*.patch
 
 	# If Flutter version used to generate bridge files differs from Flutter
-	# version used to compile Rustdesk library, generate bridge using the
+	# version used to compile JetXcelDesk library, generate bridge using the
 	# `FLUTTER_BRIDGE_VERSION` an restore the pubspec later
 
 	if [ "${FLUTTER_VERSION}" != "${FLUTTER_BRIDGE_VERSION}" ]; then
@@ -357,7 +357,7 @@ prebuild)
 		git reset
 	fi
 
-	# Install Flutter version for RustDesk library build
+	# Install Flutter version for JetXcelDesk library build
 
 	prepare_flutter "${FLUTTER_VERSION}" "${HOME}/flutter"
 
@@ -397,7 +397,7 @@ build)
 	# '.github/workflows/flutter-build.yml'
 	#
 
-	# Flutter used to compile main Rustdesk library
+	# Flutter used to compile main JetXcelDesk library
 
 	FLUTTER_VERSION="$(yq -r \
 		.env.ANDROID_FLUTTER_VERSION \
@@ -447,7 +447,7 @@ build)
 
 	bash flutter/build_android_deps.sh "${ANDROID_ABI}"
 
-	# Build rustdesk lib
+	# Build jetxceldesk lib
 
 	cargo ndk \
 		--platform 21 \
@@ -455,12 +455,12 @@ build)
 		--bindgen \
 		build \
 		--release \
-		--features "${RUSTDESK_FEATURES}"
+		--features "${JETXCELDESK_FEATURES}"
 
 	mkdir -p "flutter/android/app/src/main/jniLibs/${ANDROID_ABI}"
 
-	cp "target/${RUST_TARGET}/release/liblibrustdesk.so" \
-		"flutter/android/app/src/main/jniLibs/${ANDROID_ABI}/librustdesk.so"
+	cp "target/${RUST_TARGET}/release/liblibjetxceldesk.so" \
+		"flutter/android/app/src/main/jniLibs/${ANDROID_ABI}/libjetxceldesk.so"
 
 	cp "${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/${NDK_TARGET}/libc++_shared.so" \
 		"flutter/android/app/src/main/jniLibs/${ANDROID_ABI}/"
