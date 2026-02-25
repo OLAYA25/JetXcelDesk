@@ -22,7 +22,7 @@ typedef HandleEvent = Future<void> Function(Map<String, dynamic> evt);
 
 class PlatformFFI {
   final _eventHandlers = <String, Map<String, HandleEvent>>{};
-  final RustdeskImpl _ffiBind = RustdeskImpl();
+  final JetXcelDeskImpl _ffiBind = JetXcelDeskImpl();
 
   static String getByName(String name, [String arg = '']) {
     return context.callMethod('getByName', [name, arg]);
