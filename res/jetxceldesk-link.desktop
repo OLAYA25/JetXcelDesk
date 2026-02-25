@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=JetXcelDesk
+NoDisplay=true
+MimeType=x-scheme-handler/jetxceldesk;
+TryExec=jetxceldesk
+Exec=jetxceldesk %u
+Icon=jetxceldesk
+Terminal=false
+Type=Application
+StartupNotify=false
+StartupWMClass=jetxceldesk
