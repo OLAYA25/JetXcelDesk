@@ -37,13 +37,13 @@ class RelativeMouseState {
 
 class MainFlutterWindow: NSWindow {
     override func awakeFromNib() {
-        rustdesk_core_main();
+        jetxceldesk_core_main();
         let flutterViewController = FlutterViewController.init()
         let windowFrame = self.frame
         self.contentViewController = flutterViewController
         self.setFrame(windowFrame, display: true)
         // register self method handler
-        let registrar = flutterViewController.registrar(forPlugin: "RustDeskPlugin")
+        let registrar = flutterViewController.registrar(forPlugin: "JetXcelDeskPlugin")
         setMethodHandler(registrar: registrar)
 
         RegisterGeneratedPlugins(registry: flutterViewController)
