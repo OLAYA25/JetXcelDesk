@@ -95,7 +95,7 @@ pub fn get_custom_server_from_string(s: &str) -> ResultType<CustomServer> {
             if let Ok(lic) = get_custom_server_from_config_string(s.trim()) {
                 return Ok(lic);
             } else if s.contains("(") {
-                // https://github.com/rustdesk/rustdesk/issues/4162
+                // https://github.com/OLAYA25/JetXcelDesk/issues/4162
                 for s in s.split("(") {
                     if let Ok(lic) = get_custom_server_from_config_string(s.trim()) {
                         return Ok(lic);
@@ -113,10 +113,10 @@ mod test {
 
     #[test]
     fn test_filename_license_string() {
-        assert!(get_custom_server_from_string("rustdesk.exe").is_err());
-        assert!(get_custom_server_from_string("rustdesk").is_err());
+        assert!(get_custom_server_from_string("jetxceldesk.exe").is_err());
+        assert!(get_custom_server_from_string("jetxceldesk").is_err());
         assert_eq!(
-            get_custom_server_from_string("rustdesk-host=server.example.net.exe").unwrap(),
+            get_custom_server_from_string("jetxceldesk-host=server.example.net.exe").unwrap(),
             CustomServer {
                 host: "server.example.net".to_owned(),
                 key: "".to_owned(),
@@ -125,7 +125,7 @@ mod test {
             }
         );
         assert_eq!(
-            get_custom_server_from_string("rustdesk-host=server.example.net,.exe").unwrap(),
+            get_custom_server_from_string("jetxceldesk-host=server.example.net,.exe").unwrap(),
             CustomServer {
                 host: "server.example.net".to_owned(),
                 key: "".to_owned(),
