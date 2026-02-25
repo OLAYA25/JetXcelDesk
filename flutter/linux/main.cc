@@ -1,16 +1,16 @@
 #include <dlfcn.h>
 #include "my_application.h"
 
-#define RUSTDESK_LIB_PATH "librustdesk.so"
-typedef bool (*RustDeskCoreMain)();
+#define JETXCELDESK_LIB_PATH "libjetxceldesk.so"
+typedef bool (*JetXcelDeskCoreMain)();
 bool gIsConnectionManager = false;
 
 void print_help_install_pkg(const char* so);
 
-bool flutter_rustdesk_core_main() {
-   void* librustdesk = dlopen(RUSTDESK_LIB_PATH, RTLD_LAZY);
+bool flutter_jetxceldesk_core_main() {
+   void* libjetxceldesk = dlopen(JETXCELDESK_LIB_PATH, RTLD_LAZY);
    if (!librustdesk) {
-      fprintf(stderr,"Failed to load \"librustdesk.so\"\n");
+      fprintf(stderr,"Failed to load \"libjetxceldesk.so\"\n");
       char* error;
       if ((error = dlerror()) != nullptr) {
         fprintf(stderr, "%s\n", error);
@@ -24,17 +24,17 @@ bool flutter_rustdesk_core_main() {
       }
      return false;
    }
-   auto core_main = (RustDeskCoreMain) dlsym(librustdesk,"rustdesk_core_main");
+   auto core_main = (JetXcelDeskCoreMain) dlsym(libjetxceldesk,"jetxceldesk_core_main");
    char* error;
    if ((error = dlerror()) != nullptr) {
-       fprintf(stderr, "Program entry \"rustdesk_core_main\" is not found: %s\n", error);
+       fprintf(stderr, "Program entry \"jetxceldesk_core_main\" is not found: %s\n", error);
        return false;
    }
    return core_main();
 }
 
 int main(int argc, char** argv) {
-  if (!flutter_rustdesk_core_main()) {
+  if (!flutter_jetxceldesk_core_main()) {
       return 0;
   }
   for (int i = 0; i < argc; i++) {
